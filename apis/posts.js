@@ -15,10 +15,10 @@ router.get('/following',handleVerifyJWT, handleGetFollowingPosts);
 router.get('/user/:author', handleGetAccountPosts);
 
 
-router.post('/create', handleVerifyJWT, handleCreatePost, postUpload.single('media_file'));
+router.post('/create', handleVerifyJWT, postUpload.single('media_file'), handleCreatePost);
 router.route('/:pk')
     .get(handleGetPost, verifyPostAuthor)
-    .patch(handleVerifyJWT, handleUpdatePost, postUpload.single('media_file'))
+    .patch(handleVerifyJWT, postUpload.single('media_file'), handleUpdatePost)
     .delete(handleVerifyJWT, handleDeletePost);
 
 router.patch('/:pk/like', handleVerifyJWT, handleLikePost);

@@ -48,7 +48,6 @@ const verifyPostAuthor = async (req, res) => {
                 }
 
                 const userId = decoded.account.id;
-
                 if (userId === postBody.author.id) {
                     postBody['isPostAuthor'] = true;
                 }

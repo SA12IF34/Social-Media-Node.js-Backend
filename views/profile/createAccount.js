@@ -1,6 +1,7 @@
 const Account = require('../../models/Account');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const path = require('path');
 const multer = require('multer');
@@ -10,7 +11,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../../media/profiles'))
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = req.userId + '-' + file.originalname;
+    const uniqueSuffix = crypto.randomBytes(32).toString('hex') + '-' + file.originalname;
     cb(null, uniqueSuffix)
   }
 })
@@ -56,7 +57,7 @@ const handleCreateAccount = async (req, res, next) => {
         await account.save();
         if (profileImg) {
             req.userId = account.id;
-            account.profileImg = '/media/profiles/' + account.id + '-' + req.file.filename
+            account.profileImg = '/media/profiles/' + req.file.filename
             await account.save();
             return next();
         }
@@ -73,7 +74,7 @@ const handleCreateAccount = async (req, res, next) => {
             '15m'
         )
 
-        res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000})
+        res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, domain: 'localhost'})
 
         return res.status(200).send({'access_token': accessToken});
 

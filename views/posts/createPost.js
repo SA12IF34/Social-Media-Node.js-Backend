@@ -17,12 +17,11 @@ const handleCreatePost = async (req, res, next) => {
         const post = await Post.create(data);
 
         if (mediaFile) {
-            post.mediaFile = `/media/posts/${post.id}-${mediaFile.filename}`;
-            await post.save();
-            req.postId = post.id;
+            post.mediaFile = `/media/posts/${mediaFile.filename}`;
 
-            next()
         }
+
+        await post.save();
 
         res.status(201).json({
             id: post.id,
@@ -49,7 +48,7 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = req.postId + '-' + file.originalname;
+        const uniqueSuffix = req.userId + '-' + file.originalname;
 
         cb(null, uniqueSuffix);
     }

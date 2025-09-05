@@ -42,22 +42,26 @@ const handleLikePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.pk);
         const user = await Account.findById(req.userId);
-
+        let liked = true;
         if (user.likes.includes(post.id)) {
             user.likes = user.likes.filter(like => like !== post.id);
             post.likes -= 1;
 
             await user.save();
             await post.save();
+            
+            liked = false;
         } else {
             user.likes = [...user.likes, post.id];
             post.likes +=1;
 
             await user.save();
             await post.save();
+
+            liked = true
         }
 
-        res.sendStatus(202);
+        res.status(202).json({'like': liked});
     } catch (error) {
         console.error(error);
         res.status(500).json({"Error": error.message});
@@ -69,21 +73,27 @@ const handleDislikePost = async (req, res) => {
         const post = await Post.findById(req.params.pk);
         const user = await Account.findById(req.userId);
 
+        let disliked = true;
+
         if (user.dislikes.includes(post.id)) {
             user.dislikes = user.dislikes.filter(like => like !== post.id);
             post.dislikes -= 1;
 
             await user.save();
             await post.save();
+
+            disliked = false;
         } else {
             user.dislikes = [...user.dislikes, post.id];
             post.dislikes +=1;
 
             await user.save();
             await post.save();
+
+            disliked = true;
         }
 
-        res.sendStatus(202);
+        res.status(202).json({'dislike': disliked});
 
     } catch (error) {
         console.error(error);

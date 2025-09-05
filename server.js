@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/media')));
+app.use('/media', express.static(path.join(__dirname, '/media')));
 
 app.use(logger);
 app.use(credentials);
@@ -36,7 +36,6 @@ app.use('/comments', require('./apis/comments'));
 
 
 app.all('{*any}', (req, res) => {
-    
     res.sendStatus(404);
 });
 

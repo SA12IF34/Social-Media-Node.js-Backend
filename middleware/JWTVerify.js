@@ -17,7 +17,7 @@ const handleVerifyJWT = async (req, res, next) => {
                 if (err) return res.sendStatus(403);
 
                 req.userId = decoded.account.id;
-
+                console.log(req.body)
                 next()
             }
         )
