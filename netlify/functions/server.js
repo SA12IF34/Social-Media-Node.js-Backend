@@ -16,8 +16,11 @@ const serverErrorHandler = require('../../middleware/serverErrorHandler');
 const PORT = 3000;
 const app = express();
 
-dbConn.connectDB();
+dbConn.connectDB(undefined);
 
+mongoose.connection.on('close', () => {
+    dbConn.connectDB(undefined)
+})
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
