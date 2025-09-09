@@ -31,7 +31,6 @@ app.use(cors({
     optionsSuccessStatus: 200,
     credentials: true
 }));
-app.options('*', cors());
 
 // API Routes
 app.use('/auth', require('../../apis/account'));
