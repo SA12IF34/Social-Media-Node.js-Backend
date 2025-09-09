@@ -28,8 +28,7 @@ app.use(logger);
 app.use(credentials);
 app.use(cors({
     origin: 'https://social-media-nodejs.vercel.app',
-    optionsSuccessStatus: 200,
-    credentials: true
+    optionsSuccessStatus: 200
 }));
 
 // API Routes
@@ -45,14 +44,6 @@ app.all('{*any}', (req, res) => {
 
 app.use(serverErrorHandler)
 
-// mongoose.connection.once('open', () => {
-//     console.log("\nConnected to MongoDB. \n");
 
-//     app.listen(PORT, '0.0.0.0', () => {
-//         console.log(`Listening on \nhttp://0.0.0.0:${PORT}\n`)
-//     })
-// })
-
-// module.exports = {app}
 
 module.exports = {handler: serverless(app)}
