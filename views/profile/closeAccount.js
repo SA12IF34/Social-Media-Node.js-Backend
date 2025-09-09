@@ -2,7 +2,7 @@ const Account = require('../../models/Account');
 const jwt = require('jsonwebtoken');
 
 const handleCloseAccount = async (req, res) => {    
-    res.clearCookie('jwt_refresh_token', {httpOnly: true, secure: true, maxAge: 0, domain: 'social-media-nodejs.vercel.app'})
+    res.clearCookie('jwt_refresh_token', {httpOnly: true, secure: true, maxAge: 0, sameSite: 'None'})
 
     await Account.findByIdAndDelete(req.userId).exec();
 

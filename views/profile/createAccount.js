@@ -74,7 +74,7 @@ const handleCreateAccount = async (req, res, next) => {
             '15m'
         )
 
-        res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, domain: 'social-media-nodejs.vercel.app'})
+        res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, sameSite: 'None'})
 
         return res.status(200).send({'access_token': accessToken});
 

@@ -17,7 +17,7 @@ const handleRefreshToken = async (req, res) => {
 
             if (err) {
                 // Clear the expired refresh token
-                res.clearCookie('jwt_refresh_token', {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, domain: 'social-media-nodejs.vercel.app'});
+                res.clearCookie('jwt_refresh_token', {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, sameSite: 'None'});
 
                 return res.status(309).redirect('/login');
             }

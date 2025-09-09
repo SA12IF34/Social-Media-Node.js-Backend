@@ -8,7 +8,6 @@ const path = require('path');
 
 const {logger} = require('../../middleware/logEvents');
 const credentials = require("../../middleware/credentials");
-const CORSOptions = require('../../config/CORSOptions');
 
 const dbConn = require('../../config/dbConnect');
 
@@ -27,7 +26,12 @@ app.use('/media', express.static(path.join(__dirname, '../..', '/media')));
 
 app.use(logger);
 app.use(credentials);
-app.use(cors(CORSOptions));
+app.use(cors({
+    origin: 'https://social-media-nodejs.vercel.app',
+    optionsSuccessStatus: 200,
+    credentials: true
+}));
+app.options('*', cors());
 
 // API Routes
 app.use('/auth', require('../../apis/account'));
