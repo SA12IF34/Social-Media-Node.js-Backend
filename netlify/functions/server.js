@@ -17,9 +17,8 @@ const serverErrorHandler = require('../../middleware/serverErrorHandler');
 const PORT = 3000;
 const app = express();
 
-if (process.env.NODE_ENV !== 'test') {
-    dbConn.connectDB();
-}
+dbConn.connectDB();
+
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
