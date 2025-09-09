@@ -10,9 +10,9 @@ const {logger} = require('../../middleware/logEvents');
 const credentials = require("../../middleware/credentials");
 const CORSOptions = require('../../config/CORSOptions');
 
-const dbConn = require('./config/dbConnect');
+const dbConn = require('../../config/dbConnect');
 
-const serverErrorHandler = require('./middleware/serverErrorHandler');
+const serverErrorHandler = require('../../middleware/serverErrorHandler');
 
 const PORT = 3000;
 const app = express();
