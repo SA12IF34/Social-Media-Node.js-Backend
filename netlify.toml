@@ -1,6 +1,6 @@
 [functions]
   external_node_modules = ["express"]
-
+  included_files = ["media/**"]
 [[redirects]]
   force = true
   from = "/*"
