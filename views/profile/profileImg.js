@@ -1,4 +1,5 @@
 const Account = require('../../models/Account');
+const {handleUpload} = require('../../upload/S3_upload.service');
 
 const handleUpdateProfileImage = async (req, res) => {
 
@@ -7,7 +8,10 @@ const handleUpdateProfileImage = async (req, res) => {
         if (!profileImg) return res.sendStatus(400);
 
         const account = await Account.findById(req.userId).exec();
-        account.profileImg = '/media/profiles/' + profileImg.filename;
+        
+        const data = await handleUpload(profileImg, account.id+profileImg.originalname, profileImg.mimetype);
+
+        account.profileImg = data.Location;
         await account.save()
 
         res.status(202).send({profileImg: account.profileImg});

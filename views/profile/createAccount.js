@@ -6,6 +6,9 @@ const crypto = require('crypto');
 const path = require('path');
 const multer = require('multer');
 const handleCreateToken = require('../../utils/tokens');
+
+const {handleUpload} = require('../../upload/S3_upload.service');
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, '../../media/profiles'))
@@ -25,8 +28,10 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+
+
 const profileUpload = multer({
-    storage: storage,
+    storage: multer.memoryStorage(),
     fileFilter: fileFilter,
 });
 
@@ -38,7 +43,7 @@ const handleFileValidation = (req, res, next) => {
     next();
 };
 
-const handleCreateAccount = async (req, res, next) => {
+const handleCreateAccount = async (req, res) => {
     const {username, email, password} = req.body;
     const profileImg = req.file;
     if (!username || !password || !email) return res.status(400).json({'Error': 'You must include username, email and password'});
@@ -55,13 +60,7 @@ const handleCreateAccount = async (req, res, next) => {
             password:passwordHash
         });
         await account.save();
-        if (profileImg) {
-            req.userId = account.id;
-            account.profileImg = '/media/profiles/' + req.file.filename
-            await account.save();
-            return next();
-        }
-        
+
         const accessToken = handleCreateToken(
             account, 
             process.env.ACCESS_TOKEN_SECRET,
@@ -76,6 +75,16 @@ const handleCreateAccount = async (req, res, next) => {
 
         res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, sameSite: 'Lax', domain: '.saifchan.site'})
 
+
+        if (profileImg) {
+            const data = await handleUpload(profileImg, account.id+profileImg.originalname, profileImg.mimetype)
+
+            account.profileImg = data.Location;
+            await account.save();
+            // return next();
+        }
+        
+        
         return res.status(200).send({'access_token': accessToken});
 
     } catch (error) {

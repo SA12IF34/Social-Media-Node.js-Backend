@@ -3,6 +3,8 @@ const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
 
+const {handleUpload} = require('../../upload/S3_upload.service');
+
 const handleCreatePost = async (req, res, next) => {
     const {content} = req.body;
     const mediaFile = req.file;
@@ -17,8 +19,8 @@ const handleCreatePost = async (req, res, next) => {
         const post = await Post.create(data);
 
         if (mediaFile) {
-            post.mediaFile = `/media/posts/${mediaFile.filename}`;
-
+            const data = await handleUpload(mediaFile, 'post-'+post.id+'-'+mediaFile.originalname, mediaFile.mimetype)
+            post.mediaFile = data.Location;
         }
 
         await post.save();
@@ -64,7 +66,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const postUpload = multer({
-    storage,
+    storage: multer.memoryStorage(),
     fileFilter
 })
 

@@ -1,5 +1,6 @@
 const Post = require('../../models/Post');
 const Account = require('../../models/Account');
+const {handleUpload} = require('../../upload/S3_upload.service');
 
 const handleUpdatePost = async (req, res, next) => {
     const post = await Post.findById(req.params.pk).exec();
@@ -8,16 +9,14 @@ const handleUpdatePost = async (req, res, next) => {
 
     if (Object.keys(req.body).length > 0) {
         const {content} = req.body;
-        const file = req.file;
+        const mediaFile = req.file;
 
-        if (!content && !file) res.status(400).json({"Error": "Invalid update data."})
+        if (!content && !mediaFile) res.status(400).json({"Error": "Invalid update data."})
         
         post.content = content;
-        if (file) {
-            post.mediaFile = '/media/posts/' + post.id + '-' + file.filename;
-            await post.save();
-
-            next()
+        if (mediaFile) {
+            const data = await handleUpload(mediaFile, 'post-'+post.id+'-'+mediaFile.originalname, mediaFile.mimetype);
+            post.mediaFile = data.Location;
         }
         await post.save();
 

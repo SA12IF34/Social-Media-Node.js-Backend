@@ -24,7 +24,7 @@ mongoose.connection.on('close', () => {
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cookieParser());
-app.use('/media', express.static(path.join(__dirname, '../..', '/media')));
+// app.use('/media', express.static(path.join(__dirname, '../..', '/media')));
 
 app.use(logger);
 app.use(credentials);
