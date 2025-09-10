@@ -13,7 +13,6 @@ const dbConn = require('../../config/dbConnect');
 
 const serverErrorHandler = require('../../middleware/serverErrorHandler');
 
-const PORT = 3000;
 const app = express();
 
 dbConn.connectDB(undefined);

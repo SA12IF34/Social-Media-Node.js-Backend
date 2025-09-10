@@ -15,7 +15,7 @@ const logEvents = async (msg) => {
         }
         await fsPromises.appendFile(path.join(__dirname, '..', 'logs', 'logs.log'), logItem+'\n');
     } catch (error) {
-        console.error(error);
+        console.log('Could not log events due to the following error:\n', error);
     }
 }
 
