@@ -6,7 +6,7 @@ Backend system built with Node.js, Express.js and Mongodb, tested with Jest, dep
 <hr>
 
 ## Description and Features
-This is a social media system built in MVC architecture following Test Drevin Development approach, and has auth, profiles, posts and comments actions.
+This is a social media system built in MVC architecture following Test Drevin Development approach. Has auth, profiles, posts and comments actions.
 
 ### Auth and Profiles 
 - Signup, login, logout and close account
