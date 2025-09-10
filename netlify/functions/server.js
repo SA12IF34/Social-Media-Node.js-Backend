@@ -30,7 +30,7 @@ app.use('/media', express.static(path.join(__dirname, '../..', '/media')));
 app.use(logger);
 app.use(credentials);
 app.use(cors({
-    origin: 'https://social-media-nodejs.vercel.app',
+    origin: 'https://social-media.saifchan.site',
     optionsSuccessStatus: 200
 }));
 

@@ -27,7 +27,7 @@ const handleLogin = async (req, res) => {
             '30d'
         );
 
-        res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, sameSite: 'None'});
+        res.cookie('jwt_refresh_token', refreshToken, {httpOnly: true, secure: true, maxAge: 30*24*60*60*1000, sameSite: 'Lax', domain: '.saifchan.site'});
 
         return res.status(200).json({'access_token': accessToken});
     }
