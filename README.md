@@ -22,7 +22,6 @@ This is a social media system built in MVC architecture, and has auth, profiles,
 - Create, read, updated and delete comments on posts.
 
 ## How to run locally
-To run the project locally:
 - run `npm install` in project root dir
 - create `.env` file and include following variables in it:
 ```
